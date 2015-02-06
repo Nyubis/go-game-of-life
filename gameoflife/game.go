@@ -24,6 +24,10 @@ func (board *Board) GetAt(x int, y int) bool {
 	return board.cells[y][x]
 }
 
+func (board *Board) GetCells() [][]bool {
+	return board.cells
+}
+
 func (board *Board) SetAt(x int, y int, val bool) {
 	if (x < 0 || y < 0 || x >= board.w || y >= board.h) {
 		return // TODO: error reporting
