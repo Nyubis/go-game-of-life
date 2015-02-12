@@ -4,7 +4,7 @@ import(
 	"bytes"
 	"fmt"
 	"time"
-	"os"
+	"flag"
 	"io/ioutil"
 	"strings"
 	"errors"
@@ -13,11 +13,13 @@ import(
 
 func main() {
 	var b *gameoflife.Board
-	if len(os.Args) == 1 {
+	delay := flag.Int("t", 250, "Time to wait between steps, in milliseconds")
+	flag.Parse()
+	if len(flag.Args()) == 0 {
 		b = example()
 	} else {
 		var err error
-		b, err = parseFromFile(os.Args[1])
+		b, err = parseFromFile(flag.Arg(0))
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -28,7 +30,7 @@ func main() {
 		fmt.Println("\033[1;1H\033[2J") // Black magic to clear the screen
 		fmt.Println(render(b.GetCells(), '░', '▓'))
 		b.Step()
-		time.Sleep(250 * time.Millisecond)
+		time.Sleep(time.Duration(*delay) * time.Millisecond)
 	}
 }
 
